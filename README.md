@@ -67,15 +67,7 @@ Create a `.env` file in the root folder with:
 GEMINI_API_KEY=your-api-key-here
 ```
 
-### 7. Run the API server
-```bash
-uvicorn api:app --reload
-```
-
-Go to `http://localhost:8000/docs` to test the API using Swagger UI,  
-or access `/query?q=your_question` directly.
-
-### 8. Run the chatbot UI
+### 7. Run the chatbot UI
 ```bash
 streamlit run app.py
 ```
@@ -83,6 +75,14 @@ streamlit run app.py
 Go to `http://localhost:8501` to chat with your documents!
 
 ---
+
+### 8. Run the API server (Optional)
+```bash
+uvicorn api:app --reload
+```
+
+Go to `http://localhost:8000/docs` to test the API using Swagger UI,  
+or access `/query?q=your_question` directly.
 
 ## 🛠 Notes
 
