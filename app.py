@@ -27,13 +27,12 @@ if st.button("Submit"):
         with st.spinner("Thinking..."):
             try:
                 response = query_rag(query)
-                data = response.json()
 
                 st.subheader("Answer:")
-                st.write(data["answer"])
+                st.write(response["answer"])
                 
                 st.subheader("Sources:")
-                for source in data["sources parsed"]:
+                for source in response["sources parsed"]:
                     st.code(source)
             except Exception as e:
                 st.error(f"An error occurred: {e}")
