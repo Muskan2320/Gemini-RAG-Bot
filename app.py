@@ -1,5 +1,5 @@
 import streamlit as st
-import requests
+from api import query_rag
 
 st.set_page_config(page_title="Gemini RAG Chatbot", layout="wide")
 st.title("Gemini RAG Chatbot")
@@ -26,7 +26,7 @@ if st.button("Submit"):
     else:
         with st.spinner("Thinking..."):
             try:
-                response = requests.get("http://127.0.0.1:8000/query", params={"q": query})
+                response = query_rag(query)
                 data = response.json()
 
                 st.subheader("Answer:")
