@@ -19,15 +19,9 @@ def query_rag(q: str):
     retrieved_chunks = []
     sources = []
     for idx, dist in zip(I[0], D[0]):
-        if dist < 1.0:  # threshold
+        if dist < 1.0:  
             retrieved_chunks.append(texts[idx])
             sources.append(metadatas[idx]["source"])
-
-    if not retrieved_chunks:
-        return {
-            "answer": "The provided text does not contain information to answer your question.",
-            "sources": []
-        }
 
     prompt = "Answer the question based on the context below:\n\n"
     for i, chunk in enumerate(retrieved_chunks):
