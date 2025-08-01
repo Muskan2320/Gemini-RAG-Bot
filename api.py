@@ -12,27 +12,24 @@ metadatas = np.load("embeddings/metadatas.npy", allow_pickle=True)
 embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
 llm = genai.GenerativeModel("gemini-1.5-flash")
 
-def query_rag(q: str):
-    query_embedding = embedding_model.encode([q])
-    D, I = index.search(np.array(query_embedding), 3)
+def query_rag(question: str):
+    embedding = embedding_model.encode([question])
+    distances, indices = index.search(np.array(embedding), 3)
 
-    retrieved_chunks = []
-    sources = []
-    for idx, dist in zip(I[0], D[0]):
-        if dist < 1.0:  
-            retrieved_chunks.append(texts[idx])
-            sources.append(metadatas[idx]["source"])
+    context_chunks = [
+        (texts[i], metadatas[i]["source"])
+        for i, d in zip(indices[0], distances[0])
+        if d < 1.0
+    ]
 
-    prompt = "Answer the question based on the context below:\n\n"
-    for i, chunk in enumerate(retrieved_chunks):
-        prompt += f"[{sources[i]}]\n{chunk}\n\n"
-    prompt += f"Question: {q}\nAnswer:"
+    context = "\n\n".join(f"[{src}]\n{chunk}" for chunk, src in context_chunks)
+    prompt = f"Answer the question based on the context below:\n\n{context}\n\nQuestion: {question}\nAnswer:"
 
     response = llm.generate_content(prompt)
 
     return {
         "answer": response.text,
-        "sources parsed": list(set(sources))
+        "sources parsed": list({src for _, src in context_chunks}) if context_chunks else ["No relevant sources found."]
     }
 
 # Optional: run this file if you wanna run FastAPI only or run directly
