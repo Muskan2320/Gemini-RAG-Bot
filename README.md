@@ -4,6 +4,13 @@ A simple RAG-based chatbot powered by Google's Gemini Pro. It allows you to quer
 
 ---
 
+## 🧪 Live Demo
+
+Try it now:  
+👉 **[https://gemini-rag-bot-deployed.streamlit.app/](https://gemini-rag-bot-deployed.streamlit.app/)**
+
+---
+
 ## 🚀 Features
 
 - Ask questions about your documents
