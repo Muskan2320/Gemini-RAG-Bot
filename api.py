@@ -38,7 +38,7 @@ def query_rag(q: str):
 
     return {
         "answer": response.text,
-        "sources": sorted(set(sources))
+        "sources parsed": list(set(sources))
     }
 
 # Optional: run this file if you wanna run FastAPI only or run directly
