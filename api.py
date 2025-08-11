@@ -42,12 +42,16 @@ def query_rag(question: str):
 # Optional: run this file if you wanna run FastAPI only or run directly
 if __name__ == "__main__":
     from fastapi import FastAPI, Query
+    from pydantic import BaseModel
     import uvicorn
+
+    class QueryIn(BaseModel):
+        q: str
 
     app = FastAPI()
 
-    @app.get("/query")
-    def query_endpoint(q: str = Query(...)):
-        return query_rag(q)
+    @app.post("/query")
+    def query_endpoint(body: QueryIn):
+        return query_rag(body.q)
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
