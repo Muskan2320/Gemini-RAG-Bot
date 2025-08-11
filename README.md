@@ -65,7 +65,7 @@ Place `.pdf`, `.txt`, or `.docx` files inside the `docs/` folder.
 
 ### 5. Generate embeddings and FAISS index (if not downloaded)
 ```bash
-python embeddings/index_documents.py
+python -m embeddings.index_documents.py
 ```
 
 ### 6. Set your Gemini API Key

@@ -3,8 +3,12 @@ import numpy as np
 import faiss
 from sentence_transformers import SentenceTransformer
 import google.generativeai as genai
+from dotenv import load_dotenv, find_dotenv
 
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+load_dotenv(find_dotenv())
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=GEMINI_API_KEY)
 
 index = faiss.read_index("embeddings/index.faiss")
 texts = np.load("embeddings/texts.npy", allow_pickle=True)
@@ -14,6 +18,9 @@ llm = genai.GenerativeModel("gemini-1.5-flash")
 
 def query_rag(question: str):
     embedding = embedding_model.encode([question])
+    embedding = np.asarray(embedding, dtype=np.float32)
+
+    faiss.normalize_L2(embedding)
     distances, indices = index.search(np.array(embedding), 3)
 
     context_chunks = [
